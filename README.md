@@ -5,3 +5,13 @@
 rsa_intersect.py: 基于rsa的样本求交过程
 
 linear.py: 以正常的LR学习为base, 对比联邦学习的输出，结果相同。当然联邦计算要慢很多
+
+参考：
+
+1、https://aisp-1251170195.file.myqcloud.com/fedweb/1553845987342.pdf
+
+2、https://github.com/FederatedAI/FATE
+
+3、https://wdxtub.com/flt/flt-03/2020/12/02/
+
+4、http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html
