@@ -23,16 +23,12 @@ XB = np.array(samples[['AP', 'RH']])
 
 XA /= XA.max(axis=0)
 XB /= XB.max(axis=0)
-
 N = Y.size
-
-#1. arbiter generate pub and pri key
-public_key, private_key = paillier.generate_paillier_keypair(n_length=1024)
 
 thetaA = np.zeros(XA.shape[1])
 thetaB = np.zeros(XB.shape[1])
 
-#XB has label
+#part B has label
 eta = 0.05
 epoch = 100
 
@@ -55,6 +51,10 @@ for i in range(epoch):
     print("theta:", np.append(thetaA, thetaB), " loss:", loss)
     
 #build FL model
+
+#1. arbiter generate pub and pri key
+public_key, private_key = paillier.generate_paillier_keypair(n_length=1024)
+
 thetaA = np.zeros(XA.shape[1])
 thetaB = np.zeros(XB.shape[1])
 
