@@ -23,16 +23,18 @@ XB = np.array(samples[['AP', 'RH']])
 
 XA /= XA.max(axis=0)
 XB /= XB.max(axis=0)
+
 N = Y.size
 
-thetaA = np.zeros(XA.shape[1])
-thetaB = np.zeros(XB.shape[1])
-
-#part B has label
+#XB has label
 eta = 0.05
 epoch = 100
 
 #build base model
+thetaA = np.zeros(XA.shape[1])
+thetaB = np.zeros(XB.shape[1])
+base_out = [] 
+
 for i in range(epoch):
     UA = np.dot(XA, thetaA)
     UB = np.dot(XB, thetaB)
@@ -48,18 +50,20 @@ for i in range(epoch):
 
     loss = np.sum(d ** 2) / N
 
+    base_out.append(np.append(np.append(thetaA, thetaB), loss))
+    #out debug info
     print("theta:", np.append(thetaA, thetaB), " loss:", loss)
     
 #build FL model
+thetaA = np.zeros(XA.shape[1])
+thetaB = np.zeros(XB.shape[1])
+fl_out = []
 
 #1. arbiter generate pub and pri key
 public_key, private_key = paillier.generate_paillier_keypair(n_length=1024)
 
-thetaA = np.zeros(XA.shape[1])
-thetaB = np.zeros(XB.shape[1])
-
 maskA = 0.01
-maskB = 0.01
+maskB = 0.05
 
 for i in range(epoch):
     #part A, 
@@ -70,7 +74,7 @@ for i in range(epoch):
 
     #send UA_enc, UA2_enc to part B
     
-    #part B, 
+    #part B, the leader part
     UB = np.dot(XB, thetaB)
     
     UB_minus_Y = UB - Y
@@ -80,7 +84,7 @@ for i in range(epoch):
     #calc d, and send it to part A
     d = np.add(UA_enc, UB_minus_Y_enc)
     
-    # calc encry loss, and send it to arbiter
+    #encry loss, and send it to arbiter
     UB_minus_Y2_enc = encrypt(public_key, UB_minus_Y ** 2)
     UA_enc_UBY_dot = np.dot(UA_enc, UB_minus_Y) * 2
     loss_enc = np.add(UA2_enc.sum(), UB_minus_Y2_enc.sum())
@@ -106,5 +110,16 @@ for i in range(epoch):
     gradient_B -= maskB
     thetaB -= eta * gradient_B / N
     
+    fl_out.append(np.append(np.append(thetaA, thetaB), loss))
     #out debug info
     print("theta:", np.append(thetaA, thetaB), " loss:", loss)
+
+base_out = np.vstack(base_out)
+fl_out = np.vstack(fl_out)
+diff = np.abs(base_out - fl_out)
+s = diff.mean(axis=0)
+s1 = diff.mean(axis=0) / np.mean(np.abs(base_out), axis=0)
+
+print("AE:", diff.sum(axis=0))
+print("MAE:", s)
+print("MAPE:", s1)

@@ -72,7 +72,7 @@ for sid in host_ids:
 DA = {}
 for i in range(len(ZA)):
     sid, r, eh_id = hash_gids[i]
-    hdh_id =  H2(gmpy2.divm(ZA[i], r, rsa_n))
+    hdh_id =  H2(gmpy2.divm(ZA[i], r, rsa_n)) 
     DA[hdh_id] = sid
 
 I = []
