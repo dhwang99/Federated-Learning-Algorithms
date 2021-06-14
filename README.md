@@ -1,10 +1,10 @@
 # Federated-Learning-Algorithms
 
-联邦学习网上学习代码不易见到，端午假期中翻了一下文章，正好有空，于是实现算法原型，包括 rsa hash 求交， 垂直联邦学习（linear regression）
+国内外已经有开源的联邦学习系统，只是代码比较复杂，看起来比较费时。为了比较快速的掌握原理，在端午假期中对照文章的算法描述，实现联邦算法原型，主要是两个： rsa hash 求交， 垂直联邦学习（linear regression）
 
 rsa_intersect.py: 基于rsa的样本求交过程
 
-linear.py: 以正常的LR学习为base, 对比联邦学习的输出，结果相同。当然联邦计算要慢很多
+linear.py: 以普通的linear regression学习为base, 对比联邦学习的中间训练结果，两者相同（loss & gradient)。当然联邦计算要慢很多
 
 参考：
 
