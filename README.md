@@ -6,6 +6,8 @@ rsa_intersect.py: 基于rsa的样本求交过程
 
 linear.py: 以普通的linear regression学习为base, 对比联邦学习的中间训练结果，两者相同（loss & gradient)。当然联邦计算要慢很多
 
+看完这两，就可以愉快的去看其它复杂的代码了， 如 FedAvg， Fate等等
+
 参考：
 
 1、https://aisp-1251170195.file.myqcloud.com/fedweb/1553845987342.pdf
